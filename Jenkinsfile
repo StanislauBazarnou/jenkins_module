@@ -19,9 +19,14 @@ pipeline {
 //                 sh 'docker run -d -p 8081:8081 my-spring-app:1.0.0'
 //             }
 //         }
+//         stage('Upload to FTP') {
+//             steps {
+//                 sh 'curl --ftp-create-dirs -T target/Jenkinsfile-0.0.1-SNAPSHOT.jar -u myuser:mypass123 ftp://127.0.0.1/'
+//             }
+//         }
         stage('Upload to FTP') {
             steps {
-                sh 'curl --ftp-create-dirs -T target/Jenkinsfile-0.0.1-SNAPSHOT.jar -u myuser:mypass123 ftp://127.0.0.1/'
+                sh 'curl -v --ftp-create-dirs -T target/Jenkinsfile-0.0.1-SNAPSHOT.jar -u myuser:mypass123 ftp://127.0.0.1:21/'
             }
         }
     }
