@@ -24,9 +24,42 @@ pipeline {
 //                 sh 'curl --ftp-create-dirs -T target/Jenkinsfile-0.0.1-SNAPSHOT.jar -u myuser:mypass123 ftp://127.0.0.1/'
 //             }
 //         }
-        stage('Upload to FTP') {
+//         stage('Upload to FTP') {
+//             steps {
+//                 sh 'curl -v --ftp-create-dirs -T target/Jenkinsfile-0.0.1-SNAPSHOT.jar -u myuser:mypass123 ftp://my_ftp:21/'
+//             }
+//         }
+        stage('Upload to server via SSH') {
             steps {
-                sh 'curl -v --ftp-create-dirs -T target/Jenkinsfile-0.0.1-SNAPSHOT.jar -u myuser:mypass123 ftp://my_ftp:21/'
+                sshPublisher(
+                    continueOnError: false, failOnError: true,
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: "my_ssh",
+                            transfers: [
+                                sshTransfer(
+                                    sourceFiles: "target/Jenkinsfile-0.0.1-SNAPSHOT.jar",
+                                    removePrefix: "target",
+                                    remoteDirectory: "/",
+                                    execCommand: "echo 'Jar file successfully transferred'")
+                            ]
+                        )
+                    ]
+                )
+            }
+        }
+        stage('Run app on server') {
+            steps {
+                sshPublisher(
+                    continueOnError: false, failOnError: true,
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: "my_ssh",
+                            transfers: [],
+                            execCommand: "java -jar Jenkinsfile-0.0.1-SNAPSHOT.jar",
+                        )
+                    ]
+                )
             }
         }
     }
