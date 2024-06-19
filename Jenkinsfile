@@ -55,8 +55,11 @@ pipeline {
                     publishers: [
                         sshPublisherDesc(
                             configName: "my_ssh",
-                            transfers: [],
-                            execCommand: "java -jar /Jenkinsfile-0.0.1-SNAPSHOT.jar",
+                            transfers: [
+                            sshTransfer(
+                                remoteDirectory: "/",
+                                execCommand: "java -jar /Jenkinsfile-0.0.1-SNAPSHOT.jar")
+                            ]
                         )
                     ]
                 )
