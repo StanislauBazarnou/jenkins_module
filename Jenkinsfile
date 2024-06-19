@@ -22,18 +22,27 @@ pipeline {
         stage('Upload to FTP') {
             steps {
                 script {
-                    ftpPublisher transfers: [
+                    ftpPublisher alwaysPublishFromMaster: true, continueOnError: true, failOnError: true, masterNodeName: '', paramPublish: '', publishers: [
                         [
-                            pattern: '',
-                            removePrefix: 'target',
-                            target: '',
-                            asciiMode: false,
-                            cleanRemote: false
-                        ],
-                        remoteDirectory: 'yourRemoteDirectory'
-                    ],
-                    configName: 'my_ftp',
-                    verbose: true
+                            configName: 'my_ftp',
+                            verbose: true,
+                            transfers: [
+                                [
+                                    asciiMode: false,
+                                    cleanRemote: false,
+                                    excludes: '',
+                                    flatten: false,
+                                    makeEmptyDirs: false,
+                                    noDefaultExcludes: false,
+                                    patternSeparator: '[, ]+',
+                                    remoteDirectory: '',
+                                    sourceFiles: 'Jenkinsfile-0.0.1-SNAPSHOT.jar', // Change this to the artifact's path
+                                    remoteDirectorySDF: false,
+                                    removePrefix: 'target'
+                                ]
+                            ]
+                        ]
+                    ]
                 }
             }
         }
