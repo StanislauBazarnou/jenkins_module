@@ -58,7 +58,7 @@ pipeline {
                             transfers: [
                             sshTransfer(
                                 remoteDirectory: "/",
-                                execCommand: "/opt/java/openjdk/bin/java -jar Jenkinsfile-0.0.1-SNAPSHOT.jar")
+                                execCommand: "/opt/java/openjdk/bin/java -jar Jenkinsfile-0.0.1-SNAPSHOT.jar > app.log 2>&1")
                             ]
                         )
                     ]
