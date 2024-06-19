@@ -29,10 +29,5 @@ pipeline {
                 sh 'curl -v --ftp-create-dirs -T target/Jenkinsfile-0.0.1-SNAPSHOT.jar -u myuser:mypass123 ftp://my_ftp:21/'
             }
         }
-        stage('Run application') {
-            steps {
-                sh 'java -jar target/Jenkinsfile-0.0.1-SNAPSHOT.jar'
-            }
-        }
     }
 }
